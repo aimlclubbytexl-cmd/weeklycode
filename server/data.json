@@ -1,0 +1,35 @@
+{
+  "users": [
+    {
+      "id": "admin-user",
+      "username": "Admin",
+      "email": "admin@platform.com",
+      "university": "Global Academy",
+      "points": 0,
+      "streak": 0,
+      "role": "admin",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin",
+      "badges": []
+    }
+  ],
+  "challenges": [
+    {
+      "id": "c2",
+      "title": "ad",
+      "description": "ajja",
+      "constraints": [
+        "ajja",
+        "ajja"
+      ],
+      "sampleInput": "ajja",
+      "sampleOutput": "ama",
+      "points": 100,
+      "category": "Arrays",
+      "deadline": "2026-07-18T00:00:00.000Z",
+      "status": "active"
+    }
+  ],
+  "submissions": [],
+  "forumPosts": [],
+  "announcements": []
+}
