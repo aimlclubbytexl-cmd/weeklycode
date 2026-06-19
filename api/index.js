@@ -193,17 +193,6 @@ const getDbSubmissions = async () => {
     return null;
   }
 };
-
-      score: row.score,
-      remarks: row.remarks,
-      language: row.language,
-    }));
-  } catch (error) {
-    console.error('DB submissions query failed:', error);
-    return null;
-  }
-};
-
 const createDbChallenge = async (challenge) => {
   if (!pool) return null;
   try {
@@ -227,17 +216,21 @@ const createDbChallenge = async (challenge) => {
     );
     const row = result.rows[0];
     return {
-    id: row.id,
-    title: row.title,
-    description: row.description,
-    constraints: Array.isArray(row.constraints) ? row.constraints : JSON.parse(row.constraints || '[]'),
-    sampleInput: row.sample_input,
-    sampleOutput: row.sample_output,
-    deadline: row.deadline,
-    points: row.points,
-    status: row.status,
-    category: row.category,
-  };
+      id: row.id,
+      title: row.title,
+      description: row.description,
+      constraints: Array.isArray(row.constraints) ? row.constraints : JSON.parse(row.constraints || '[]'),
+      sampleInput: row.sample_input,
+      sampleOutput: row.sample_output,
+      deadline: row.deadline,
+      points: row.points,
+      status: row.status,
+      category: row.category,
+    };
+  } catch (error) {
+    console.error('DB create challenge failed:', error);
+    return null;
+  }
 };
 
 const deleteDbChallenge = async (id) => {
@@ -273,21 +266,20 @@ const createDbSubmission = async (submission) => {
     );
     const row = result.rows[0];
     return {
+      id: row.id,
+      challengeId: row.challenge_id,
+      userId: row.user_id,
+      githubLink: row.github_link,
+      submittedAt: row.submitted_at,
+      status: row.status,
+      score: row.score,
+      remarks: row.remarks,
+      language: row.language,
+    };
   } catch (error) {
     console.error('DB create submission failed:', error);
     return null;
   }
-};
-    id: row.id,
-    challengeId: row.challenge_id,
-    userId: row.user_id,
-    githubLink: row.github_link,
-    submittedAt: row.submitted_at,
-    status: row.status,
-    score: row.score,
-    remarks: row.remarks,
-    language: row.language,
-  };
 };
 
 export default async function handler(req, res) {
@@ -302,6 +294,7 @@ export default async function handler(req, res) {
     return null;
   });
   if (body === null) return;
+  console.log('[api] request', req.method, route, { bodyPreview: typeof body === 'object' ? Object.keys(body).slice(0,5) : String(body) });
 
   try {
     if (route === '/login' && req.method === 'POST') {
@@ -311,6 +304,10 @@ export default async function handler(req, res) {
       if (pool) {
         const dbUser = await getDbUserByEmail(normalizedEmail);
         if (!dbUser) return sendJson(res, { message: 'Invalid credentials' }, 401);
+        if (!dbUser.password) {
+          console.error('DB user missing password field', { email: normalizedEmail, user: dbUser });
+          return sendJson(res, { message: 'Invalid credentials' }, 401);
+        }
 
         const passwordMatch = await bcrypt.compare(password, dbUser.password);
         if (!passwordMatch) return sendJson(res, { message: 'Invalid credentials' }, 401);
