@@ -16,6 +16,12 @@ const sendJson = (res, data, status = 200) => {
   res.end(JSON.stringify(data));
 };
 
+const setCorsHeaders = (res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+};
+
 const readData = async () => {
   const file = await fs.readFile(DATA_PATH, 'utf-8');
   return JSON.parse(file);
@@ -220,6 +226,11 @@ const createDbSubmission = async (submission) => {
 };
 
 export default async function handler(req, res) {
+  setCorsHeaders(res);
+  if (req.method === 'OPTIONS') {
+    return sendJson(res, { message: 'OK' }, 200);
+  }
+
   const slug = req.query.slug;
   const route = Array.isArray(slug) ? `/${slug.join('/')}` : `/${slug || ''}`;
   const body = await parseJsonBody(req).catch((error) => {
