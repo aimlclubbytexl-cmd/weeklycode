@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const DATA_PATH = join(__dirname, '..', 'server', 'data.json');
+const DATA_PATH = join(__dirname, 'data.json');
 const DB_URL = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
 const pool = DB_URL ? new Pool({ connectionString: DB_URL }) : null;
 
