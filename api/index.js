@@ -22,6 +22,16 @@ const setCorsHeaders = (res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 };
 
+const getRequestPath = (req) => {
+  const url = req.url || '';
+  const path = url.split('?')[0];
+  if (path.startsWith('/api')) {
+    const trimmed = path.replace(/^\/api/, '') || '/';
+    return trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  }
+  return path || '/';
+};
+
 const readData = async () => {
   const file = await fs.readFile(DATA_PATH, 'utf-8');
   return JSON.parse(file);
@@ -231,8 +241,7 @@ export default async function handler(req, res) {
     return sendJson(res, { message: 'OK' }, 200);
   }
 
-  const slug = req.query.slug;
-  const route = Array.isArray(slug) ? `/${slug.join('/')}` : `/${slug || ''}`;
+  const route = getRequestPath(req);
   const body = await parseJsonBody(req).catch((error) => {
     sendJson(res, { message: 'Invalid JSON body' }, 400);
     return null;
