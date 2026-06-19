@@ -1,33 +1,36 @@
-# Backend for Weekly Coding Challenge Platform
+# Backend / API for Weekly Coding Challenge Platform
 
-This backend is a simple Express server with mock data stored in `server/data.json`.
+This project uses a Vercel serverless API located in `api/[...slug].js`.
+There is no separate Express `server/` folder in the current codebase.
 
-## Install
+## Local development
+
+Install dependencies and run the frontend:
 
 ```bash
-cd server
 npm install
+npm run dev
 ```
 
-## Start
+If you want to run the serverless function locally, use the Vercel CLI:
 
 ```bash
-cd server
-npm start
+npm install -g vercel
+vercel dev
 ```
 
 ## API Endpoints
 
-- `POST /login` — body: `{ email, password }`
-- `GET /challenges`
-- `GET /challenges/:id`
-- `GET /submissions`
-- `GET /forum`
-- `POST /forum`
-- `POST /submissions/:id`
-- `GET /announcements`
-- `GET /users`
-- `POST /submit`
+- `POST /api/login` — body: `{ email, password }`
+- `GET /api/challenges`
+- `GET /api/challenges/:id`
+- `GET /api/submissions`
+- `GET /api/forum`
+- `POST /api/forum`
+- `PUT /api/submissions/:id`
+- `GET /api/announcements`
+- `GET /api/users`
+- `POST /api/submit`
 
 ## Admin login
 
@@ -35,42 +38,23 @@ Use `admin@platform.com` / `password` unless a Neon database is configured with 
 
 ## Neon database support
 
-To use Neon for user management, set one of these environment variables:
+The serverless API supports Neon/PostgreSQL when one of these environment variables is set:
 
 - `NEON_DATABASE_URL`
 - `DATABASE_URL`
 
-### Setup
+When a database is not configured, the API falls back to mock data in `api/data.json`.
 
-1. Copy `.env.example` to `.env` and add your Neon connection string:
+### Example environment
 
-```bash
-cp .env.example .env
-```
+Create `.env` and set:
 
-2. Edit `.env`:
 ```env
 NEON_DATABASE_URL=postgresql://user:password@host/database
 ```
 
-3. Run the migration to create tables and seed default users:
+### Notes
 
-```bash
-npm run migrate
-```
-
-4. Start the backend:
-
-```bash
-npm start
-```
-
-### Default test users (after migration)
-
-- **Admin**: `admin@platform.com` / `admin123`
-- **Student**: `alex@university.edu` / `password`
-
-### Password security
-
-Passwords are hashed with bcrypt (10 salt rounds) when stored in Neon.
-When using mock data (`data.json`), passwords are plaintext for demo purposes.
+- The API is deployed as a Vercel serverless function.
+- Mock data lives in `api/data.json`.
+- Passwords stored in mock data are plaintext for demo purposes.
