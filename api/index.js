@@ -8,7 +8,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const DATA_PATH = join(__dirname, 'data.json');
 const DB_URL = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
-const pool = DB_URL ? new Pool({ connectionString: DB_URL }) : null;
+let pool = null;
+if (DB_URL) {
+  try {
+    pool = new Pool({ connectionString: DB_URL });
+  } catch (error) {
+    console.error('Failed to initialize DB pool:', error);
+    pool = null;
+  }
+}
 
 const sendJson = (res, data, status = 200) => {
   res.statusCode = status;
@@ -62,127 +70,163 @@ const parseJsonBody = async (req) => {
 
 const getDbUserByEmail = async (email) => {
   if (!pool) return null;
-  const result = await pool.query(
-    `SELECT id, username, email, university, points, streak, role, avatar, badges, password
-     FROM users
-     WHERE email = $1
-     LIMIT 1`,
-    [email]
-  );
-  if (result.rowCount === 0) return null;
-  const user = result.rows[0];
-  return {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-    university: user.university,
-    points: user.points,
-    streak: user.streak,
-    role: user.role,
-    avatar: user.avatar,
-    badges: Array.isArray(user.badges) ? user.badges : JSON.parse(user.badges || '[]'),
-    password: user.password,
-  };
+  try {
+    const result = await pool.query(
+      `SELECT id, username, email, university, points, streak, role, avatar, badges, password
+       FROM users
+       WHERE email = $1
+       LIMIT 1`,
+      [email]
+    );
+    if (result.rowCount === 0) return null;
+    const user = result.rows[0];
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      university: user.university,
+      points: user.points,
+      streak: user.streak,
+      role: user.role,
+      avatar: user.avatar,
+      badges: Array.isArray(user.badges) ? user.badges : JSON.parse(user.badges || '[]'),
+      password: user.password,
+    };
+  } catch (error) {
+    console.error('DB get user by email failed:', error);
+    return null;
+  }
 };
 
 const getDbUsers = async () => {
   if (!pool) return null;
-  const result = await pool.query(
-    `SELECT id, username, email, university, points, streak, role, avatar, badges
-     FROM users`
-  );
-  return result.rows.map((user) => ({
-    ...user,
-    badges: Array.isArray(user.badges) ? user.badges : JSON.parse(user.badges || '[]'),
-  }));
+  try {
+    const result = await pool.query(
+      `SELECT id, username, email, university, points, streak, role, avatar, badges
+       FROM users`
+    );
+    return result.rows.map((user) => ({
+      ...user,
+      badges: Array.isArray(user.badges) ? user.badges : JSON.parse(user.badges || '[]'),
+    }));
+  } catch (error) {
+    console.error('DB get users failed:', error);
+    return null;
+  }
 };
 
 const getDbChallenges = async () => {
   if (!pool) return null;
-  const result = await pool.query(
-    `SELECT id, title, description, constraints, sample_input, sample_output, deadline, points, status, category
-     FROM challenges`
-  );
-  return result.rows.map((row) => ({
-    id: row.id,
-    title: row.title,
-    description: row.description,
-    constraints: Array.isArray(row.constraints) ? row.constraints : JSON.parse(row.constraints || '[]'),
-    sampleInput: row.sample_input,
-    sampleOutput: row.sample_output,
-    deadline: row.deadline,
-    points: row.points,
-    status: row.status,
-    category: row.category,
-  }));
+  try {
+    const result = await pool.query(
+      `SELECT id, title, description, constraints, sample_input, sample_output, deadline, points, status, category
+       FROM challenges`
+    );
+    return result.rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      description: row.description,
+      constraints: Array.isArray(row.constraints) ? row.constraints : JSON.parse(row.constraints || '[]'),
+      sampleInput: row.sample_input,
+      sampleOutput: row.sample_output,
+      deadline: row.deadline,
+      points: row.points,
+      status: row.status,
+      category: row.category,
+    }));
+  } catch (error) {
+    console.error('DB get challenges failed:', error);
+    return null;
+  }
 };
 
 const getDbChallengeById = async (id) => {
   if (!pool) return null;
-  const result = await pool.query(
-    `SELECT id, title, description, constraints, sample_input, sample_output, deadline, points, status, category
-     FROM challenges
-     WHERE id = $1
-     LIMIT 1`,
-    [id]
-  );
-  if (result.rowCount === 0) return null;
-  const row = result.rows[0];
-  return {
-    id: row.id,
-    title: row.title,
-    description: row.description,
-    constraints: Array.isArray(row.constraints) ? row.constraints : JSON.parse(row.constraints || '[]'),
-    sampleInput: row.sample_input,
-    sampleOutput: row.sample_output,
-    deadline: row.deadline,
-    points: row.points,
-    status: row.status,
-    category: row.category,
-  };
+  try {
+    const result = await pool.query(
+      `SELECT id, title, description, constraints, sample_input, sample_output, deadline, points, status, category
+       FROM challenges
+       WHERE id = $1
+       LIMIT 1`,
+      [id]
+    );
+    if (result.rowCount === 0) return null;
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      title: row.title,
+      description: row.description,
+      constraints: Array.isArray(row.constraints) ? row.constraints : JSON.parse(row.constraints || '[]'),
+      sampleInput: row.sample_input,
+      sampleOutput: row.sample_output,
+      deadline: row.deadline,
+      points: row.points,
+      status: row.status,
+      category: row.category,
+    };
+  } catch (error) {
+    console.error('DB get challenge by id failed:', error);
+    return null;
+  }
 };
 
 const getDbSubmissions = async () => {
   if (!pool) return null;
-  const result = await pool.query(
-    `SELECT id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language
-     FROM submissions`
-  );
-  return result.rows.map((row) => ({
-    id: row.id,
-    challengeId: row.challenge_id,
-    userId: row.user_id,
-    githubLink: row.github_link,
-    submittedAt: row.submitted_at,
-    status: row.status,
-    score: row.score,
-    remarks: row.remarks,
-    language: row.language,
-  }));
+  try {
+    const result = await pool.query(
+      `SELECT id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language
+       FROM submissions`
+    );
+    return result.rows.map((row) => ({
+      id: row.id,
+      challengeId: row.challenge_id,
+      userId: row.user_id,
+      githubLink: row.github_link,
+      submittedAt: row.submitted_at,
+      status: row.status,
+      score: row.score,
+      remarks: row.remarks,
+      language: row.language,
+    }));
+  } catch (error) {
+    console.error('DB submissions query failed:', error);
+    return null;
+  }
+};
+
+      score: row.score,
+      remarks: row.remarks,
+      language: row.language,
+    }));
+  } catch (error) {
+    console.error('DB submissions query failed:', error);
+    return null;
+  }
 };
 
 const createDbChallenge = async (challenge) => {
   if (!pool) return null;
-  const id = `c_${Date.now()}`;
-  const result = await pool.query(
-    `INSERT INTO challenges (id, title, description, constraints, sample_input, sample_output, deadline, points, status, category)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-     RETURNING id, title, description, constraints, sample_input, sample_output, deadline, points, status, category`,
-    [
-      id,
-      challenge.title,
-      challenge.description,
-      JSON.stringify(challenge.constraints || []),
-      challenge.sampleInput || '',
-      challenge.sampleOutput || '',
-      challenge.deadline,
-      challenge.points,
-      challenge.status,
-      challenge.category,
-    ]
-  );
-  const row = result.rows[0];
-  return {
+  try {
+    const id = `c_${Date.now()}`;
+    const result = await pool.query(
+      `INSERT INTO challenges (id, title, description, constraints, sample_input, sample_output, deadline, points, status, category)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+       RETURNING id, title, description, constraints, sample_input, sample_output, deadline, points, status, category`,
+      [
+        id,
+        challenge.title,
+        challenge.description,
+        JSON.stringify(challenge.constraints || []),
+        challenge.sampleInput || '',
+        challenge.sampleOutput || '',
+        challenge.deadline,
+        challenge.points,
+        challenge.status,
+        challenge.category,
+      ]
+    );
+    const row = result.rows[0];
+    return {
     id: row.id,
     title: row.title,
     description: row.description,
@@ -198,31 +242,42 @@ const createDbChallenge = async (challenge) => {
 
 const deleteDbChallenge = async (id) => {
   if (!pool) return null;
-  const result = await pool.query(`DELETE FROM challenges WHERE id = $1 RETURNING id, title`, [id]);
-  return result.rowCount ? result.rows[0] : null;
+  try {
+    const result = await pool.query(`DELETE FROM challenges WHERE id = $1 RETURNING id, title`, [id]);
+    return result.rowCount ? result.rows[0] : null;
+  } catch (error) {
+    console.error('DB delete challenge failed:', error);
+    return null;
+  }
 };
 
 const createDbSubmission = async (submission) => {
   if (!pool) return null;
-  const id = `s_${Date.now()}`;
-  const result = await pool.query(
-    `INSERT INTO submissions (id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-     RETURNING id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language`,
-    [
-      id,
-      submission.challengeId,
-      submission.userId,
-      submission.githubLink,
-      submission.submittedAt,
-      submission.status,
-      submission.score,
-      submission.remarks || '',
-      submission.language,
-    ]
-  );
-  const row = result.rows[0];
-  return {
+  try {
+    const id = `s_${Date.now()}`;
+    const result = await pool.query(
+      `INSERT INTO submissions (id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language`,
+      [
+        id,
+        submission.challengeId,
+        submission.userId,
+        submission.githubLink,
+        submission.submittedAt,
+        submission.status,
+        submission.score,
+        submission.remarks || '',
+        submission.language,
+      ]
+    );
+    const row = result.rows[0];
+    return {
+  } catch (error) {
+    console.error('DB create submission failed:', error);
+    return null;
+  }
+};
     id: row.id,
     challengeId: row.challenge_id,
     userId: row.user_id,
