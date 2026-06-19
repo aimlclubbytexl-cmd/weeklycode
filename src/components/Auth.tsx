@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { User } from '../types';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api';
+
 interface AuthProps {
   onLogin: (user: User) => void;
 }
@@ -26,7 +28,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:4000/login', {
+      const response = await fetch(`${API_BASE}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -76,7 +78,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:4000/signup', {
+      const response = await fetch(`${API_BASE}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
