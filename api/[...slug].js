@@ -347,7 +347,7 @@ export default async function handler(req, res) {
       return sendJson(res, data.submissions);
     }
 
-    if (route.startsWith('/submissions/') && req.method === 'POST') {
+    if (route.startsWith('/submissions/') && (req.method === 'PATCH' || req.method === 'POST')) {
       const submissionId = route.split('/')[2];
       const { status } = body;
       if (pool) {
