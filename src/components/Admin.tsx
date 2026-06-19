@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { Challenge, Submission, User } from '../types';
 
-const API_BASE = (import.meta as any).env.VITE_API_BASE_URL || 'http://localhost:4000';
+const API_BASE = (import.meta as any).env.VITE_API_BASE_URL || '/api';
 
 interface CreateChallengeForm {
   title: string;
