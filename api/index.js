@@ -1,17 +1,44 @@
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs/promises';
+import { existsSync, readFileSync } from 'fs';
 import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const DATA_PATH = join(__dirname, 'data.json');
+
+const loadLocalEnv = () => {
+  if (process.env.NEON_DATABASE_URL || process.env.DATABASE_URL) return;
+  try {
+    const envPath = join(__dirname, '..', '.env');
+    if (!existsSync(envPath)) return;
+    const envBody = readFileSync(envPath, 'utf-8');
+    envBody.split(/\r?\n/).forEach((line) => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) return;
+      const [key, ...rest] = trimmed.split('=');
+      if (!key || process.env[key]) return;
+      process.env[key] = rest.join('=').trim();
+    });
+  } catch (error) {
+    console.error('Unable to load local .env:', error);
+  }
+};
+
+loadLocalEnv();
+
 const DB_URL = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
 let pool = null;
 if (DB_URL) {
   try {
-    pool = new Pool({ connectionString: DB_URL });
+    pool = new Pool({
+      connectionString: DB_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
   } catch (error) {
     console.error('Failed to initialize DB pool:', error);
     pool = null;
