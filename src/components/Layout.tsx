@@ -50,17 +50,17 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-40 w-64 bg-indigo-900 text-white transition-transform duration-300 ease-in-out
+        fixed lg:static inset-y-0 left-0 z-40 w-64 h-screen bg-indigo-900 text-white transition-transform duration-300 ease-in-out flex flex-col
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="p-6 flex items-center gap-3">
+        <div className="p-6 flex items-center gap-3 shrink-0">
           <div className="p-2 bg-indigo-500 rounded-lg">
             <Code2 size={24} />
           </div>
           <span className="text-xl font-bold tracking-tight">CodeChallenge</span>
         </div>
 
-        <nav className="mt-6 px-4 space-y-2">
+        <nav className="flex-1 overflow-y-auto mt-2 px-4 space-y-2">
           {menuItems.map((item) => (
             <Link
               key={item.path}
@@ -74,7 +74,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 w-full p-4 border-t border-indigo-800">
+        <div className="shrink-0 w-full p-4 border-t border-indigo-800">
           <div className="flex items-center gap-3 px-4 py-3 mb-4">
             <img src={user?.avatar} alt="User" className="w-8 h-8 rounded-full" />
             <div className="overflow-hidden">

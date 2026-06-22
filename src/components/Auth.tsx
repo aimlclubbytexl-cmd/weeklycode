@@ -222,15 +222,6 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
             {isSignup ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
           </button>
         </div>
-
-        {!isSignup && (
-          <div className="mt-6 pt-6 border-t border-slate-200">
-            <p className="text-xs text-slate-500 text-center mb-2">Demo Admin Account:</p>
-            <p className="text-xs text-slate-600 text-center">
-              <strong>admin@platform.com</strong> / <strong>admin123</strong>
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
