@@ -11,7 +11,6 @@ import { Announcements } from './components/Announcements';
 import { History } from './components/History';
 import { Profile } from './components/Profile';
 import { Admin } from './components/Admin';
-import { Certificate } from './components/Certificate';
 import { User } from './types';
 
 export default function App() {
@@ -64,17 +63,6 @@ export default function App() {
           <Route path="history" element={<History />} />
           <Route path="profile" element={<Profile user={user} />} />
           <Route path="admin" element={user.role === 'admin' ? <Admin /> : <Navigate to="/" />} />
-          <Route
-            path="certificate"
-            element={
-              <Certificate
-                userName={user.username}
-                challengeName="Optimal Path Finder"
-                date={new Date().toLocaleDateString()}
-                rank="Gold"
-              />
-            }
-          />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

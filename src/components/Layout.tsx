@@ -11,8 +11,7 @@ import {
   X,
   MessageSquare,
   Bell,
-  History,
-  Award
+  History
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -31,7 +30,6 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
     { icon: Bell, label: 'Announcements', path: '/announcements' },
     { icon: History, label: 'My History', path: '/history' },
     { icon: UserCircle, label: 'Profile', path: '/profile' },
-    { icon: Award, label: 'Certificates', path: '/certificate' },
   ];
 
   if (user?.role === 'admin') {
