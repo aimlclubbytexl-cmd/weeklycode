@@ -52,10 +52,8 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 flex items-center gap-3 shrink-0">
-          <div className="p-2 bg-indigo-500 rounded-lg">
-            <Code2 size={24} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">CodeChallenge</span>
+          <img src="/AIML_CLUB_LOGO.png" alt="AIML Club Logo" className="w-10 h-10 object-contain" />
+          <span className="text-xl font-bold tracking-tight">AIML Club</span>
         </div>
 
         <nav className="flex-1 overflow-y-auto mt-2 px-4 space-y-2">
