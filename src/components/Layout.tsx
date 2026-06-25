@@ -52,45 +52,60 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 flex items-center gap-3 shrink-0">
-          <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
-            {/* AI Letter with circuit design */}
-            <g id="ai-group">
-              {/* A */}
-              <path d="M 30 160 L 50 80 L 70 160 M 38 130 L 62 130" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-              {/* I */}
-              <path d="M 85 80 L 85 160" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg viewBox="0 0 1243 581" className="w-16 h-10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <style>{`.circuit-line { fill: none; stroke: #00D9FF; stroke-width: 24; stroke-linecap: round; stroke-linejoin: round; } .circuit-dot { fill: #FFFFFF; } .node-ring { fill: none; stroke: #00D9FF; stroke-width: 3; }`}</style>
+            </defs>
+            
+            {/* AI Letter */}
+            <g id="ai-letter">
+              {/* A Shape - left side */}
+              <path className="circuit-line" d="M 280 450 L 380 150 L 480 450"/>
+              {/* A Shape - cross bar */}
+              <path className="circuit-line" d="M 320 320 L 440 320"/>
               
-              {/* Circuit dots for A */}
-              <circle cx="35" cy="110" r="2.5" fill="#0EA5E9"/>
-              <circle cx="65" cy="110" r="2.5" fill="#0EA5E9"/>
-              <circle cx="50" cy="145" r="2.5" fill="#0EA5E9"/>
+              {/* Circuit dots on A */}
+              <circle className="circuit-dot" cx="290" cy="380" r="12"/>
+              <circle className="circuit-dot" cx="290" cy="280" r="12"/>
+              <circle className="circuit-dot" cx="470" cy="380" r="12"/>
+              <circle className="circuit-dot" cx="470" cy="280" r="12"/>
+              <circle className="circuit-dot" cx="380" cy="480" r="12"/>
+              <circle className="circuit-dot" cx="320" cy="320" r="10"/>
+              <circle className="circuit-dot" cx="440" cy="320" r="10"/>
             </g>
             
-            {/* ML Letter with circuit design */}
-            <g id="ml-group">
-              {/* M */}
-              <path d="M 105 160 L 105 85 L 125 110 L 145 85 L 145 160" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-              {/* L */}
-              <path d="M 165 80 L 165 160 L 185 160" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            {/* I Shape */}
+            <g id="i-letter">
+              <path className="circuit-line" d="M 580 150 L 580 450"/>
               
-              {/* Circuit dots for ML */}
-              <circle cx="110" cy="100" r="2.5" fill="#0EA5E9"/>
-              <circle cx="140" cy="100" r="2.5" fill="#0EA5E9"/>
-              <circle cx="150" cy="120" r="2.5" fill="#0EA5E9"/>
-              <circle cx="170" cy="130" r="2.5" fill="#0EA5E9"/>
+              {/* Circuit dots on I */}
+              <circle className="circuit-dot" cx="580" cy="200" r="12"/>
+              <circle className="circuit-dot" cx="580" cy="400" r="12"/>
             </g>
             
-            {/* Connection lines */}
-            <line x1="95" y1="120" x2="102" y2="120" stroke="#0EA5E9" strokeWidth="1.5" opacity="0.6"/>
+            {/* ML Letter */}
+            <g id="ml-letter">
+              {/* M Shape */}
+              <path className="circuit-line" d="M 700 450 L 700 180 L 800 320 L 900 180 L 900 450"/>
+              
+              {/* Circuit dots on M */}
+              <circle className="circuit-dot" cx="700" cy="250" r="12"/>
+              <circle className="circuit-dot" cx="800" cy="320" r="12"/>
+              <circle className="circuit-dot" cx="900" cy="250" r="12"/>
+            </g>
             
-            {/* Outer decorative circuit frame */}
-            <rect x="15" y="65" width="170" height="105" rx="8" fill="none" stroke="#0EA5E9" strokeWidth="1.5" opacity="0.3"/>
+            {/* L Shape */}
+            <g id="l-letter">
+              <path className="circuit-line" d="M 1020 150 L 1020 450 L 1140 450"/>
+              
+              {/* Circuit dots on L */}
+              <circle className="circuit-dot" cx="1020" cy="300" r="12"/>
+              <circle className="circuit-dot" cx="1140" cy="450" r="12"/>
+              <circle className="circuit-dot" cx="1020" cy="450" r="12"/>
+            </g>
             
-            {/* Top corner accents */}
-            <circle cx="20" cy="70" r="1.5" fill="#0EA5E9"/>
-            <circle cx="180" cy="70" r="1.5" fill="#0EA5E9"/>
-            <circle cx="20" cy="170" r="1.5" fill="#0EA5E9"/>
-            <circle cx="180" cy="170" r="1.5" fill="#0EA5E9"/>
+            {/* Decorative connecting lines */}
+            <path className="circuit-line" d="M 600 350 L 680 350" opacity="0.7"/>
           </svg>
           <span className="text-xl font-bold tracking-tight">Coding Challenges</span>
         </div>

@@ -1,0 +1,58 @@
+<svg viewBox="0 0 1243 581" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <style>
+      .circuit-line { fill: none; stroke: #00D9FF; stroke-width: 24; stroke-linecap: round; stroke-linejoin: round; }
+      .circuit-dot { fill: #FFFFFF; }
+      .node-ring { fill: none; stroke: #00D9FF; stroke-width: 3; }
+    </style>
+  </defs>
+  
+  <!-- AI Letter -->
+  <g id="ai-letter">
+    <!-- A Shape - left side -->
+    <path class="circuit-line" d="M 280 450 L 380 150 L 480 450"/>
+    <!-- A Shape - cross bar -->
+    <path class="circuit-line" d="M 320 320 L 440 320"/>
+    
+    <!-- Circuit dots on A -->
+    <circle class="circuit-dot" cx="290" cy="380" r="12"/>
+    <circle class="circuit-dot" cx="290" cy="280" r="12"/>
+    <circle class="circuit-dot" cx="470" cy="380" r="12"/>
+    <circle class="circuit-dot" cx="470" cy="280" r="12"/>
+    <circle class="circuit-dot" cx="380" cy="480" r="12"/>
+    <circle class="circuit-dot" cx="320" cy="320" r="10"/>
+    <circle class="circuit-dot" cx="440" cy="320" r="10"/>
+    
+    <!-- I Shape -->
+    <path class="circuit-line" d="M 580 150 L 580 450"/>
+    
+    <!-- Circuit dots on I -->
+    <circle class="circuit-dot" cx="580" cy="200" r="12"/>
+    <circle class="circuit-dot" cx="580" cy="400" r="12"/>
+  </g>
+  
+  <!-- ML Letter -->
+  <g id="ml-letter">
+    <!-- M Shape -->
+    <path class="circuit-line" d="M 700 450 L 700 180 L 800 320 L 900 180 L 900 450"/>
+    
+    <!-- Circuit dots on M -->
+    <circle class="circuit-dot" cx="700" cy="250" r="12"/>
+    <circle class="circuit-dot" cx="800" cy="320" r="12"/>
+    <circle class="circuit-dot" cx="900" cy="250" r="12"/>
+    
+    <!-- L Shape -->
+    <path class="circuit-line" d="M 1020 150 L 1020 450 L 1140 450"/>
+    
+    <!-- Circuit dots on L -->
+    <circle class="circuit-dot" cx="1020" cy="300" r="12"/>
+    <circle class="circuit-dot" cx="1140" cy="450" r="12"/>
+    <circle class="circuit-dot" cx="1020" cy="450" r="12"/>
+  </g>
+  
+  <!-- Decorative connecting lines -->
+  <path class="circuit-line" d="M 600 350 L 680 350" opacity="0.7"/>
+  
+  <!-- Optional: Add subtle frame -->
+  <rect x="250" y="120" width="950" height="370" fill="none" stroke="#00D9FF" stroke-width="2" opacity="0.2" rx="20"/>
+</svg>
