@@ -52,8 +52,47 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 flex items-center gap-3 shrink-0">
-          <img src="/AIML_CLUB_LOGO.png" alt="AIML Club Logo" className="w-10 h-10 object-contain" />
-          <span className="text-xl font-bold tracking-tight">AIML Club</span>
+          <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
+            {/* AI Letter with circuit design */}
+            <g id="ai-group">
+              {/* A */}
+              <path d="M 30 160 L 50 80 L 70 160 M 38 130 L 62 130" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              {/* I */}
+              <path d="M 85 80 L 85 160" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              
+              {/* Circuit dots for A */}
+              <circle cx="35" cy="110" r="2.5" fill="#0EA5E9"/>
+              <circle cx="65" cy="110" r="2.5" fill="#0EA5E9"/>
+              <circle cx="50" cy="145" r="2.5" fill="#0EA5E9"/>
+            </g>
+            
+            {/* ML Letter with circuit design */}
+            <g id="ml-group">
+              {/* M */}
+              <path d="M 105 160 L 105 85 L 125 110 L 145 85 L 145 160" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              {/* L */}
+              <path d="M 165 80 L 165 160 L 185 160" stroke="#0EA5E9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              
+              {/* Circuit dots for ML */}
+              <circle cx="110" cy="100" r="2.5" fill="#0EA5E9"/>
+              <circle cx="140" cy="100" r="2.5" fill="#0EA5E9"/>
+              <circle cx="150" cy="120" r="2.5" fill="#0EA5E9"/>
+              <circle cx="170" cy="130" r="2.5" fill="#0EA5E9"/>
+            </g>
+            
+            {/* Connection lines */}
+            <line x1="95" y1="120" x2="102" y2="120" stroke="#0EA5E9" strokeWidth="1.5" opacity="0.6"/>
+            
+            {/* Outer decorative circuit frame */}
+            <rect x="15" y="65" width="170" height="105" rx="8" fill="none" stroke="#0EA5E9" strokeWidth="1.5" opacity="0.3"/>
+            
+            {/* Top corner accents */}
+            <circle cx="20" cy="70" r="1.5" fill="#0EA5E9"/>
+            <circle cx="180" cy="70" r="1.5" fill="#0EA5E9"/>
+            <circle cx="20" cy="170" r="1.5" fill="#0EA5E9"/>
+            <circle cx="180" cy="170" r="1.5" fill="#0EA5E9"/>
+          </svg>
+          <span className="text-xl font-bold tracking-tight">Coding Challenges</span>
         </div>
 
         <nav className="flex-1 overflow-y-auto mt-2 px-4 space-y-2">
