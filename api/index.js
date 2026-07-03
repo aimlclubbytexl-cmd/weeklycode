@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import { existsSync, readFileSync } from 'fs';
 import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
+import { buildUserStatsAfterSubmission } from './stats.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -309,6 +310,42 @@ const createDbSubmission = async (submission) => {
   }
 };
 
+const updateUserStatsForSubmission = async ({ userId, previousStatus, nextStatus, challengePoints, currentPoints, currentStreak }) => {
+  if (!pool || !userId) return null;
+
+  const stats = buildUserStatsAfterSubmission({
+    previousStatus,
+    nextStatus,
+    challengePoints,
+    currentPoints,
+    currentStreak,
+  });
+
+  if (!stats.streakUpdated) {
+    return null;
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE users
+       SET points = points + $1, streak = streak + 1
+       WHERE id = $2
+       RETURNING id, username, email, university, points, streak, role, avatar, badges`,
+      [stats.awardedPoints, userId]
+    );
+
+    if (result.rowCount === 0) return null;
+    const user = result.rows[0];
+    return {
+      ...user,
+      badges: Array.isArray(user.badges) ? user.badges : JSON.parse(user.badges || '[]'),
+    };
+  } catch (error) {
+    console.error('DB update user stats failed:', error);
+    return null;
+  }
+};
+
 export default async function handler(req, res) {
   setCorsHeaders(res);
   if (req.method === 'OPTIONS') {
@@ -450,12 +487,33 @@ export default async function handler(req, res) {
       const submissionId = route.split('/')[2];
       const { status } = body;
       if (pool) {
+        const existing = await pool.query(
+          `SELECT id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language FROM submissions WHERE id = $1`,
+          [submissionId]
+        );
+        if (existing.rowCount === 0) return sendJson(res, { message: 'Submission not found' }, 404);
+
+        const prevSubmission = existing.rows[0];
         const result = await pool.query(
           `UPDATE submissions SET status = $1 WHERE id = $2 RETURNING id, challenge_id, user_id, github_link, submitted_at, status, score, remarks, language`,
           [status, submissionId]
         );
-        if (result.rowCount === 0) return sendJson(res, { message: 'Submission not found' }, 404);
         const row = result.rows[0];
+
+        const challengeResult = await pool.query(`SELECT points FROM challenges WHERE id = $1`, [row.challenge_id]);
+        const challengePoints = challengeResult.rowCount > 0 ? Number(challengeResult.rows[0].points || 0) : 0;
+        const userResult = await pool.query(`SELECT points, streak FROM users WHERE id = $1`, [row.user_id]);
+        const currentUser = userResult.rowCount > 0 ? userResult.rows[0] : null;
+
+        await updateUserStatsForSubmission({
+          userId: row.user_id,
+          previousStatus: prevSubmission.status,
+          nextStatus: row.status,
+          challengePoints,
+          currentPoints: currentUser?.points ?? 0,
+          currentStreak: currentUser?.streak ?? 0,
+        });
+
         return sendJson(res, {
           id: row.id,
           challengeId: row.challenge_id,
@@ -471,7 +529,16 @@ export default async function handler(req, res) {
       const data = await readData();
       const submission = data.submissions.find((s) => s.id === submissionId);
       if (!submission) return sendJson(res, { message: 'Submission not found' }, 404);
+      const previousStatus = submission.status;
       if (status) submission.status = status;
+      if (status === 'accepted' && previousStatus !== 'accepted') {
+        const challenge = data.challenges.find((c) => c.id === submission.challengeId);
+        const user = data.users.find((u) => u.id === submission.userId);
+        if (challenge && user) {
+          user.points = Number(user.points || 0) + Number(challenge.points || 0);
+          user.streak = Number(user.streak || 0) + 1;
+        }
+      }
       await writeData(data);
       return sendJson(res, submission);
     }

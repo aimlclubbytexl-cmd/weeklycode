@@ -25,7 +25,10 @@ export const Leaderboard: React.FC = () => {
     loadUsers();
   }, []);
 
-  const sortedUsers = [...users].sort((a, b) => b.points - a.points);
+  const sortedUsers = [...users].sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points;
+    return b.streak - a.streak;
+  });
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

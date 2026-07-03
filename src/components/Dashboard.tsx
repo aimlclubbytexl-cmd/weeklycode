@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
@@ -9,41 +9,49 @@ import {
   Flame, 
   TrendingUp 
 } from 'lucide-react';
-import { getChallenges } from '../api';
+import { getChallenges, getUsers } from '../api';
 import { Challenge, User } from '../types';
 
 export const Dashboard: React.FC = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const user = useMemo<User | null>(() => {
+  const [user, setUser] = useState<User | null>(() => {
     try {
       return JSON.parse(sessionStorage.getItem('user') ?? 'null');
     } catch {
       return null;
     }
-  }, []);
+  });
 
   const activeChallenge = challenges.find((c) => c.status === 'active');
   const completedChallenges = challenges.filter((c) => c.status === 'completed');
 
   useEffect(() => {
-    async function loadChallenges() {
+    async function loadDashboardData() {
       setLoading(true);
       setError('');
       try {
-        const data = await getChallenges();
-        setChallenges(data);
+        const [challengeData, usersData] = await Promise.all([getChallenges(), getUsers()]);
+        setChallenges(challengeData);
+
+        const currentUser = user?.id
+          ? usersData.find((candidate) => candidate.id === user.id) ?? user
+          : user;
+
+        if (currentUser) {
+          setUser(currentUser);
+          sessionStorage.setItem('user', JSON.stringify(currentUser));
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load challenges');
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard');
       } finally {
         setLoading(false);
       }
     }
 
-    loadChallenges();
-  }, []);
+    loadDashboardData();
+  }, [user?.id]);
 
   return (
     <div className="space-y-8">

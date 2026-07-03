@@ -75,6 +75,8 @@ export const ChallengeDetail: React.FC = () => {
         remarks: '',
         language,
       } as Omit<Submission, 'id' | 'submittedAt'>);
+      const updatedUser = { ...user, points: user.points ?? 0, streak: user.streak ?? 0 };
+      sessionStorage.setItem('user', JSON.stringify(updatedUser));
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Submission failed');
