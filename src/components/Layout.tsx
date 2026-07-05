@@ -52,8 +52,11 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 flex items-center gap-3 shrink-0">
-          {/* Logo Graphic Container */}
-          <div className="flex items-center justify-center w-8 h-8 bg-[#1A1A2E] rounded-lg shadow-inner overflow-hidden shrink-0">
+          {/* Logo Graphic Container with a clean, low-intensity soft glow wrapper */}
+          <div 
+            className="flex items-center justify-center w-8 h-8 bg-[#1A1A2E] rounded-lg overflow-hidden shrink-0 transition-shadow duration-300"
+            style={{ boxShadow: '0 0 15px rgba(22, 199, 154, 0.25)' }}
+          >
             <img 
               src="/aiml-logo.svg" 
               alt="Logo" 
@@ -63,12 +66,16 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
             />
           </div>
           
-          {/* Branding Text */}
-          <div className="flex flex-col leading-tight">
+          {/* Collapsible Branding Text wrapper with a soft subtle text-glow overlay effect */}
+          <div 
+            className="hidden lg:flex flex-col leading-tight select-none transition-all duration-300"
+            style={{ filter: 'drop-shadow(0 0 8px rgba(22, 199, 154, 0.2))' }}
+          >
             <span className="font-bold text-sm tracking-wide text-white">Coding</span>
             <span className="font-medium text-xs text-slate-400">Challenges</span>
           </div>
         </div>
+
 
         <nav className="flex-1 overflow-y-auto mt-2 px-4 space-y-2">
           {menuItems.map((item) => (
