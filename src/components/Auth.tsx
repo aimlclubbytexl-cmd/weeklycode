@@ -227,7 +227,12 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   );
 };
 
-const CodeIcon = ({ size }: { size: number }) => (
-  <img src="../public/aiml-logo.svg" alt="AI/ML Club Logo" width="100" height="100">
-
+const CodeIcon = ({ size = 100 }: { size?: number }) => (
+  <img 
+    src="/aiml-logo.svg" 
+    alt="AI/ML Club Logo" 
+    width={size} 
+    height={size} 
+  />
 );
+
