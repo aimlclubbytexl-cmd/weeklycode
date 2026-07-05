@@ -79,31 +79,6 @@ const GlobalStyles = () => (
 );
 
 // ==========================================
-// --- DATA/MOCKS ---
-// ==========================================
-const MOCK_USER = {
-  name: 'AlexCode',
-  role: 'student',
-  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4',
-  rank: 42,
-  points: 1250,
-  streak: 5,
-  challengesSolved: 87,
-  tier: 'Gold'
-};
-
-const MOCK_CHALLENGES = [
-  { id: 1, title: 'Optimal Path Finder', difficulty: 'Hard', category: 'Algorithms', points: 100, timeLimit: '2 Hours', participants: 1205, deadline: '01/01/2027' },
-  { id: 2, title: 'String Compression Pro', difficulty: 'Medium', category: 'Strings', points: 50, timeLimit: '1 Hour', participants: 3421, deadline: 'Past' },
-];
-
-const MOCK_LEADERBOARD = [
-  { rank: 1, name: 'Sarah Connor', points: 45200, streak: 45, solved: 312, avatar: 'https://i.pravatar.cc/150?u=sarah' },
-  { rank: 2, name: 'John Wick', points: 42100, streak: 30, solved: 298, avatar: 'https://i.pravatar.cc/150?u=john' },
-  { rank: 3, name: 'Neo Anderson', points: 41050, streak: 28, solved: 285, avatar: 'https://i.pravatar.cc/150?u=neo' },
-];
-
-// ==========================================
 // --- COMPONENTS/COMMON ---
 // ==========================================
 const ParticleBackground = ({ theme }: { theme: string }) => {
@@ -526,7 +501,16 @@ export function ReactDemo() {
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   const handleLogin = () => {
-    setCurrentUser(MOCK_USER);
+    setCurrentUser({
+      name: 'AlexCode',
+      role: 'student',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4',
+      rank: 42,
+      points: 1250,
+      streak: 5,
+      challengesSolved: 87,
+      tier: 'Gold'
+    });
     setCurrentView('dashboard');
   };
 
@@ -536,7 +520,11 @@ export function ReactDemo() {
   };
 
   const navigateToChallenge = (id: number) => {
-    setActiveChallenge(MOCK_CHALLENGES.find(c => c.id === id) || MOCK_CHALLENGES[0]);
+    const challenge = [
+      { id: 1, title: 'Optimal Path Finder', difficulty: 'Hard', category: 'Algorithms', points: 100, timeLimit: '2 Hours', participants: 1205, deadline: '01/01/2027' },
+      { id: 2, title: 'String Compression Pro', difficulty: 'Medium', category: 'Strings', points: 50, timeLimit: '1 Hour', participants: 3421, deadline: 'Past' },
+    ].find(c => c.id === id) || { id: 1, title: 'Optimal Path Finder', difficulty: 'Hard', category: 'Algorithms', points: 100, timeLimit: '2 Hours', participants: 1205, deadline: '01/01/2027' };
+    setActiveChallenge(challenge);
     setCurrentView('challenge');
   };
 
