@@ -52,62 +52,22 @@ export const Layout: React.FC<LayoutProps> = ({ user, onLogout }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 flex items-center gap-3 shrink-0">
-          <svg viewBox="0 0 1243 581" className="w-16 h-10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <style>{`.circuit-line { fill: none; stroke: #00D9FF; stroke-width: 24; stroke-linecap: round; stroke-linejoin: round; } .circuit-dot { fill: #FFFFFF; } .node-ring { fill: none; stroke: #00D9FF; stroke-width: 3; }`}</style>
-            </defs>
-            
-            {/* AI Letter */}
-            <g id="ai-letter">
-              {/* A Shape - left side */}
-              <path className="circuit-line" d="M 280 450 L 380 150 L 480 450"/>
-              {/* A Shape - cross bar */}
-              <path className="circuit-line" d="M 320 320 L 440 320"/>
-              
-              {/* Circuit dots on A */}
-              <circle className="circuit-dot" cx="290" cy="380" r="12"/>
-              <circle className="circuit-dot" cx="290" cy="280" r="12"/>
-              <circle className="circuit-dot" cx="470" cy="380" r="12"/>
-              <circle className="circuit-dot" cx="470" cy="280" r="12"/>
-              <circle className="circuit-dot" cx="380" cy="480" r="12"/>
-              <circle className="circuit-dot" cx="320" cy="320" r="10"/>
-              <circle className="circuit-dot" cx="440" cy="320" r="10"/>
-            </g>
-            
-            {/* I Shape */}
-            <g id="i-letter">
-              <path className="circuit-line" d="M 580 150 L 580 450"/>
-              
-              {/* Circuit dots on I */}
-              <circle className="circuit-dot" cx="580" cy="200" r="12"/>
-              <circle className="circuit-dot" cx="580" cy="400" r="12"/>
-            </g>
-            
-            {/* ML Letter */}
-            <g id="ml-letter">
-              {/* M Shape */}
-              <path className="circuit-line" d="M 700 450 L 700 180 L 800 320 L 900 180 L 900 450"/>
-              
-              {/* Circuit dots on M */}
-              <circle className="circuit-dot" cx="700" cy="250" r="12"/>
-              <circle className="circuit-dot" cx="800" cy="320" r="12"/>
-              <circle className="circuit-dot" cx="900" cy="250" r="12"/>
-            </g>
-            
-            {/* L Shape */}
-            <g id="l-letter">
-              <path className="circuit-line" d="M 1020 150 L 1020 450 L 1140 450"/>
-              
-              {/* Circuit dots on L */}
-              <circle className="circuit-dot" cx="1020" cy="300" r="12"/>
-              <circle className="circuit-dot" cx="1140" cy="450" r="12"/>
-              <circle className="circuit-dot" cx="1020" cy="450" r="12"/>
-            </g>
-            
-            {/* Decorative connecting lines */}
-            <path className="circuit-line" d="M 600 350 L 680 350" opacity="0.7"/>
-          </svg>
-          <span className="text-xl font-bold tracking-tight">Coding Challenges</span>
+          {/* Logo Graphic Container */}
+          <div className="flex items-center justify-center w-8 h-8 bg-[#1A1A2E] rounded-lg shadow-inner overflow-hidden shrink-0">
+            <img 
+              src="/aiml-logo.svg" 
+              alt="Logo" 
+              width={24} 
+              height={24} 
+              className="block object-contain"
+            />
+          </div>
+          
+          {/* Branding Text */}
+          <div className="flex flex-col leading-tight">
+            <span className="font-bold text-sm tracking-wide text-white">Coding</span>
+            <span className="font-medium text-xs text-slate-400">Challenges</span>
+          </div>
         </div>
 
         <nav className="flex-1 overflow-y-auto mt-2 px-4 space-y-2">
