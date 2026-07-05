@@ -11,6 +11,7 @@ import { Announcements } from './components/Announcements';
 import { History } from './components/History';
 import { Profile } from './components/Profile';
 import { Admin } from './components/Admin';
+import { ReactDemo } from './components/ReactDemo';
 import { User } from './types';
 
 export default function App() {
@@ -41,8 +42,10 @@ export default function App() {
     return (
       <Router>
         <Routes>
+          <Route path="/" element={<ReactDemo />} />
+          <Route path="/react-demo" element={<ReactDemo />} />
           <Route path="/login" element={<Auth onLogin={handleLogin} />} />
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     );
@@ -52,6 +55,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Navigate to="/" />} />
+        <Route path="/react-demo" element={<ReactDemo />} />
 
         <Route path="/" element={<Layout user={user} onLogout={handleLogout} />}>
           <Route index element={<Dashboard />} />
