@@ -105,16 +105,17 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#f0f4f9] p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <div className="inline-flex p-3 bg-indigo-600 text-white rounded-2xl mb-4">
-            <CodeIcon size={32} />
+          {/* Fixed Logo Size & Placement Container */}
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-[#1A1A2E] rounded-xl mb-4 shadow-sm overflow-hidden">
+            <CodeIcon size={36} />
           </div>
           <h2 className="text-3xl font-bold text-slate-900">
             {isSignup ? 'Create Account' : 'Sign In'}
           </h2>
-          <p className="text-slate-500 mt-2">
+          <p className="text-slate-500 mt-2 text-sm">
             {isSignup
               ? 'Join the coding challenge community'
               : 'Enter your credentials to access your account'}
@@ -165,7 +166,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
-            />
+                />
           </div>
 
           <div className="relative">
@@ -233,6 +234,6 @@ const CodeIcon = ({ size = 100 }: { size?: number }) => (
     alt="AI/ML Club Logo" 
     width={size} 
     height={size} 
+    className="block object-contain"
   />
 );
-
