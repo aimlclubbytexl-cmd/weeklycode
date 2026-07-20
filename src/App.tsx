@@ -1,5 +1,5 @@
-import { ReactDemo } from './components/ReactDemo';
+import LandingApp from './LandingApp';
 
 export default function App() {
-  return <ReactDemo />;
+  return <LandingApp />;
 }
