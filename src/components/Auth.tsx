@@ -7,11 +7,10 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
 interface AuthProps {
   onLogin: (user: User) => void;
-  initialMode?: 'login' | 'signup';
 }
 
-export const Auth: React.FC<AuthProps> = ({ onLogin, initialMode = 'login' }) => {
-  const [isSignup, setIsSignup] = useState(initialMode === 'signup');
+export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
+  const [isSignup, setIsSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({

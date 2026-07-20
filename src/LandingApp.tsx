@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Code2,
   Sparkles,
@@ -343,7 +342,6 @@ const FeaturesSection = () => {
 };
 
 export default function LandingApp() {
-  const navigate = useNavigate();
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
@@ -377,20 +375,9 @@ export default function LandingApp() {
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <div className="hidden sm:block">
-              <Button
-                variant="outline"
-                className="px-5 py-2.5"
-                onClick={() => navigate('/login')}
-              >
-                Log in
-              </Button>
+              <Button variant="outline" className="px-5 py-2.5">Log in</Button>
             </div>
-            <Button
-              className="px-5 py-2.5"
-              onClick={() => navigate('/signup')}
-            >
-              Sign Up
-            </Button>
+            <Button className="px-5 py-2.5">Sign Up</Button>
           </div>
         </div>
       </nav>
