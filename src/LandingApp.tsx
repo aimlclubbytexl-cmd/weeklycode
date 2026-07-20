@@ -303,16 +303,19 @@ const Button = ({ children, variant = 'primary', className = '', onClick, icon: 
 const FeaturesSection = () => {
   const features = [
     {
+      id: 'feature-mentorship',
       icon: <BrainCircuit className="text-purple-500 w-8 h-8 mb-4" />,
       title: 'AI-Powered Mentorship',
       description: 'Get real-time feedback and hints tailored to your coding style.',
     },
     {
+      id: 'feature-leaderboards',
       icon: <Trophy className="text-blue-500 w-8 h-8 mb-4" />,
       title: 'Global Leaderboards',
       description: 'Compete with peers worldwide and showcase your problem-solving skills.',
     },
     {
+      id: 'feature-community',
       icon: <Users className="text-cyan-500 w-8 h-8 mb-4" />,
       title: 'Community Driven',
       description: 'Join a vibrant community of developers, share solutions, and learn together.',
@@ -320,14 +323,14 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <div className="py-24 px-4 max-w-6xl mx-auto relative z-10">
+    <div id="features" className="py-24 px-4 max-w-6xl mx-auto relative z-10">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">Why Choose CodeChallenge?</h2>
         <p className="text-muted max-w-2xl mx-auto">Everything you need to accelerate your programming journey, built into one powerful platform.</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {features.map((feature, idx) => (
-          <div key={idx} className="glass-panel p-8 rounded-3xl hover:-translate-y-2 transition-transform duration-300">
+          <div key={idx} id={feature.id} className="glass-panel p-8 rounded-3xl hover:-translate-y-2 transition-transform duration-300">
             {feature.icon}
             <h3 className="text-xl font-bold text-main mb-2">{feature.title}</h3>
             <p className="text-muted leading-relaxed">{feature.description}</p>
@@ -342,6 +345,13 @@ export default function LandingApp() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+
+  const scrollToFeature = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <div className={`relative min-h-screen ${theme === 'dark' ? 'theme-dark' : 'theme-light'} bg-transparent text-main transition-colors duration-300`}>
@@ -391,10 +401,19 @@ export default function LandingApp() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Button className="w-full sm:w-auto px-8 py-4 text-lg" icon={ChevronRight}>
+              <Button
+                className="w-full sm:w-auto px-8 py-4 text-lg"
+                icon={ChevronRight}
+                onClick={() => scrollToFeature('feature-mentorship')}
+              >
                 Start Coding for Free
               </Button>
-              <Button variant="outline" className="w-full sm:w-auto px-8 py-4 text-lg" icon={Globe}>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto px-8 py-4 text-lg"
+                icon={Globe}
+                onClick={() => scrollToFeature('feature-leaderboards')}
+              >
                 Explore Challenges
               </Button>
             </div>
