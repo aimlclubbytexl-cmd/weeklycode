@@ -1,4 +1,4 @@
-import { fileURLToPath } from 'url';
+ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs/promises';
 import { existsSync, readFileSync } from 'fs';
